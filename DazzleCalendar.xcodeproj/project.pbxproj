@@ -1,0 +1,358 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		047E150D1FE91522004D6178 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E150C1FE91522004D6178 /* AppDelegate.m */; };
+		047E15101FE91522004D6178 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E150F1FE91522004D6178 /* ViewController.m */; };
+		047E15151FE91522004D6178 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047E15141FE91522004D6178 /* Assets.xcassets */; };
+		047E151B1FE91522004D6178 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E151A1FE91522004D6178 /* main.m */; };
+		047E15281FE91584004D6178 /* DazzleCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15221FE91584004D6178 /* DazzleCalendar.m */; };
+		047E15291FE91584004D6178 /* DazzleCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15231FE91584004D6178 /* DazzleCalendarDayView.m */; };
+		047E152A1FE91584004D6178 /* SubDazzleCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15241FE91584004D6178 /* SubDazzleCalendarView.m */; };
+		047E152D1FE91595004D6178 /* NSDate+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E152B1FE91595004D6178 /* NSDate+Format.m */; };
+		047E15301FE915EC004D6178 /* UIColor+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E152F1FE915EC004D6178 /* UIColor+FlatUI.m */; };
+		047E15351FE9196D004D6178 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15331FE9196D004D6178 /* NSString+Category.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		047E15081FE91522004D6178 /* DazzleCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DazzleCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		047E150B1FE91522004D6178 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		047E150C1FE91522004D6178 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		047E150E1FE91522004D6178 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		047E150F1FE91522004D6178 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		047E15141FE91522004D6178 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		047E15191FE91522004D6178 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		047E151A1FE91522004D6178 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		047E15221FE91584004D6178 /* DazzleCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DazzleCalendar.m; sourceTree = "<group>"; };
+		047E15231FE91584004D6178 /* DazzleCalendarDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DazzleCalendarDayView.m; sourceTree = "<group>"; };
+		047E15241FE91584004D6178 /* SubDazzleCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubDazzleCalendarView.m; sourceTree = "<group>"; };
+		047E15251FE91584004D6178 /* DazzleCalendarDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DazzleCalendarDayView.h; sourceTree = "<group>"; };
+		047E15261FE91584004D6178 /* DazzleCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DazzleCalendar.h; sourceTree = "<group>"; };
+		047E15271FE91584004D6178 /* SubDazzleCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubDazzleCalendarView.h; sourceTree = "<group>"; };
+		047E152B1FE91595004D6178 /* NSDate+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Format.m"; sourceTree = "<group>"; };
+		047E152C1FE91595004D6178 /* NSDate+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Format.h"; sourceTree = "<group>"; };
+		047E152E1FE915EC004D6178 /* UIColor+FlatUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+FlatUI.h"; sourceTree = "<group>"; };
+		047E152F1FE915EC004D6178 /* UIColor+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+FlatUI.m"; sourceTree = "<group>"; };
+		047E15321FE91758004D6178 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		047E15331FE9196D004D6178 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
+		047E15341FE9196D004D6178 /* NSString+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Category.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		047E15051FE91522004D6178 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		047E14FF1FE91522004D6178 = {
+			isa = PBXGroup;
+			children = (
+				047E150A1FE91522004D6178 /* DazzleCalendar */,
+				047E15091FE91522004D6178 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		047E15091FE91522004D6178 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				047E15081FE91522004D6178 /* DazzleCalendar.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		047E150A1FE91522004D6178 /* DazzleCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				047E15211FE91579004D6178 /* DazzleCalendar */,
+				047E150B1FE91522004D6178 /* AppDelegate.h */,
+				047E150C1FE91522004D6178 /* AppDelegate.m */,
+				047E150E1FE91522004D6178 /* ViewController.h */,
+				047E150F1FE91522004D6178 /* ViewController.m */,
+				047E15141FE91522004D6178 /* Assets.xcassets */,
+				047E15191FE91522004D6178 /* Info.plist */,
+				047E151A1FE91522004D6178 /* main.m */,
+				047E15321FE91758004D6178 /* PrefixHeader.pch */,
+			);
+			path = DazzleCalendar;
+			sourceTree = "<group>";
+		};
+		047E15211FE91579004D6178 /* DazzleCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				047E15341FE9196D004D6178 /* NSString+Category.h */,
+				047E15331FE9196D004D6178 /* NSString+Category.m */,
+				047E152E1FE915EC004D6178 /* UIColor+FlatUI.h */,
+				047E152F1FE915EC004D6178 /* UIColor+FlatUI.m */,
+				047E152C1FE91595004D6178 /* NSDate+Format.h */,
+				047E152B1FE91595004D6178 /* NSDate+Format.m */,
+				047E15261FE91584004D6178 /* DazzleCalendar.h */,
+				047E15221FE91584004D6178 /* DazzleCalendar.m */,
+				047E15271FE91584004D6178 /* SubDazzleCalendarView.h */,
+				047E15241FE91584004D6178 /* SubDazzleCalendarView.m */,
+				047E15251FE91584004D6178 /* DazzleCalendarDayView.h */,
+				047E15231FE91584004D6178 /* DazzleCalendarDayView.m */,
+			);
+			path = DazzleCalendar;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		047E15071FE91522004D6178 /* DazzleCalendar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 047E151E1FE91522004D6178 /* Build configuration list for PBXNativeTarget "DazzleCalendar" */;
+			buildPhases = (
+				047E15041FE91522004D6178 /* Sources */,
+				047E15051FE91522004D6178 /* Frameworks */,
+				047E15061FE91522004D6178 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DazzleCalendar;
+			productName = DazzleCalendar;
+			productReference = 047E15081FE91522004D6178 /* DazzleCalendar.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		047E15001FE91522004D6178 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = Mac;
+				TargetAttributes = {
+					047E15071FE91522004D6178 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 047E15031FE91522004D6178 /* Build configuration list for PBXProject "DazzleCalendar" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 047E14FF1FE91522004D6178;
+			productRefGroup = 047E15091FE91522004D6178 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				047E15071FE91522004D6178 /* DazzleCalendar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		047E15061FE91522004D6178 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047E15151FE91522004D6178 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		047E15041FE91522004D6178 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047E15301FE915EC004D6178 /* UIColor+FlatUI.m in Sources */,
+				047E152D1FE91595004D6178 /* NSDate+Format.m in Sources */,
+				047E15101FE91522004D6178 /* ViewController.m in Sources */,
+				047E151B1FE91522004D6178 /* main.m in Sources */,
+				047E15351FE9196D004D6178 /* NSString+Category.m in Sources */,
+				047E15291FE91584004D6178 /* DazzleCalendarDayView.m in Sources */,
+				047E152A1FE91584004D6178 /* SubDazzleCalendarView.m in Sources */,
+				047E150D1FE91522004D6178 /* AppDelegate.m in Sources */,
+				047E15281FE91584004D6178 /* DazzleCalendar.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		047E151C1FE91522004D6178 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		047E151D1FE91522004D6178 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		047E151F1FE91522004D6178 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TARGET_NAME)/PrefixHeader.pch";
+				INFOPLIST_FILE = DazzleCalendar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dazzle.DazzleCalendar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		047E15201FE91522004D6178 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TARGET_NAME)/PrefixHeader.pch";
+				INFOPLIST_FILE = DazzleCalendar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dazzle.DazzleCalendar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		047E15031FE91522004D6178 /* Build configuration list for PBXProject "DazzleCalendar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				047E151C1FE91522004D6178 /* Debug */,
+				047E151D1FE91522004D6178 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		047E151E1FE91522004D6178 /* Build configuration list for PBXNativeTarget "DazzleCalendar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				047E151F1FE91522004D6178 /* Debug */,
+				047E15201FE91522004D6178 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 047E15001FE91522004D6178 /* Project object */;
+}

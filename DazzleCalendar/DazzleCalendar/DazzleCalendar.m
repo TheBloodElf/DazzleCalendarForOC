@@ -43,6 +43,7 @@
     for (int index = 0; index < 2 * _sendDateCount + 1; index ++ ) {
         leftCmp = [_nSCalender components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:currDate];
         leftCmp.month += (index - _sendDateCount);
+        leftCmp.day = 1;
         tempDate = [NSDate new];
         tempDate = [_nSCalender dateFromComponents:leftCmp];
         [_monthSendDates addObject:tempDate];

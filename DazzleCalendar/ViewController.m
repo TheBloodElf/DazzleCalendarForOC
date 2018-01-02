@@ -15,6 +15,7 @@
 @interface ViewController ()<DazzleCalendarDelegate> {
     UITableView *_tableView;//表格视图
     DazzleCalendar *_dazzleCalendar;//日历控件
+    NSCalendar * _nScalendar;
     NSDate *_userSelectedDate;//用户选择的时间
     
     CGFloat _monthScrollViewLastY;//日历中月视图开始改变的y点
@@ -33,6 +34,7 @@
     self.navigationItem.title = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@年%@月",@(_userSelectedDate.year),@(_userSelectedDate.month)]];
     //现在的时间
     _userSelectedDate = [NSDate new];
+    _nScalendar = [NSCalendar currentCalendar];
     NSCalendar * calendar = [NSCalendar currentCalendar];
     NSDateComponents * comps = [[NSDateComponents alloc] init];
     comps = [calendar components:NSCalendarUnitWeekOfMonth fromDate:_userSelectedDate];
@@ -229,7 +231,14 @@
 - (void)didShowSendDate:(NSDate*)sendDate {
     //改变用户选择时间
     if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
-        _userSelectedDate = [NSDate dateWithFormat:[NSString stringWithFormat:@"%ld-%02ld-%02ld 08:30:00",sendDate.year,sendDate.month,_userSelectedDate.day]];
+        //这一个月的最大天数 当从31天的月滑动到30天的月时会崩溃
+        NSRange range = [_nScalendar rangeOfUnit:NSCalendarUnitDay
+                                          inUnit: NSCalendarUnitMonth
+                                         forDate:sendDate];
+        int daysOfMonth = (int)_userSelectedDate.day;
+        if(daysOfMonth > range.length)
+            daysOfMonth = (int)range.length;
+        _userSelectedDate = [NSDate dateWithFormat:[NSString stringWithFormat:@"%ld-%02ld-%02d 08:30:00",sendDate.year,sendDate.month,daysOfMonth]];
     }
     if(_dazzleCalendar.calendarType == DazzleCalendarWeek) {
         //当前天是一周的第几天 周日为第一天

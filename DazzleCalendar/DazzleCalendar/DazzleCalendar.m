@@ -7,197 +7,187 @@
 //
 
 #import "DazzleCalendar.h"
+#import "MonthCollectionCell.h"
+#import "WeekCollectionCell.h"
 
-@interface DazzleCalendar ()<UIScrollViewDelegate,SubDazzleCalendarDelegate> {
+@interface DazzleCalendar ()<UICollectionViewDelegate,UICollectionViewDataSource,MonthCollectionDelegate,WeekCollectionDelegate> {
     NSCalendar *_nSCalender;//弄成单例，内存占用太多
     
-    //上一个月
-    SubDazzleCalendarView *_leftMonthCalendarView;
-    //当前月
-    SubDazzleCalendarView *_centerMonthCalendarView;
-    //下一个月
-    SubDazzleCalendarView *_rightMonthCalendarView;
     
-
-    //上一个周
-    SubDazzleCalendarView *_leftWeekCalendarView;
-    //当前周
-    SubDazzleCalendarView *_centerWeekCalendarView;
-    //下一个周
-    SubDazzleCalendarView *_rightWeekCalendarView;
-    
-    UIScrollView *_currScrollView;
-    
+    int _sendDateCount;//种子时间个数
+    NSMutableArray<NSDate*> *_monthSendDates;//月视图种子时间
+    NSMutableArray<NSDate*> *_weekSendDates;//周视图种子时间
 }
-//用户当前选择的时间，也就是中间日历显示的时间
-//比较专业的说法是：当前月、周种子时间
-@property (nonatomic, strong) NSDate *monthWeekDate;
 
 @end
 
 @implementation DazzleCalendar
-//初始化日历，周视图还是月视图
-- (instancetype)initWithFrame:(CGRect)frame calendarType:(DazzleCalendarType)calendarType {
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
-        _calendarType = calendarType;
-        self.backgroundColor = [UIColor clearColor];
+        _sendDateCount = 100;
+        _monthSendDates = [@[] mutableCopy];
+        _weekSendDates = [@[] mutableCopy];
         _nSCalender = [NSCalendar currentCalendar];
-
-        //上面的周几视图 高度为42.5
-        CGFloat itemWidth = frame.size.width / 7;
-        CGFloat itemHeight = 42.5;
-        //创建月
-        _monthScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, itemHeight, frame.size.width, 255)];
-        _monthScrollView.contentSize = CGSizeMake(3 * _monthScrollView.frame.size.width, _monthScrollView.frame.size.height);
-        _monthScrollView.pagingEnabled = YES;
-        _monthScrollView.delegate = self;
-        _monthScrollView.showsHorizontalScrollIndicator = NO;
-        _monthScrollView.showsVerticalScrollIndicator = NO;
-        //上一个月
-        _leftMonthCalendarView = [[SubDazzleCalendarView alloc] initWithFrame:CGRectMake(0, 0, _monthScrollView.frame.size.width, _monthScrollView.frame.size.height) calendarType:DazzleCalendarMonth];
-        _leftMonthCalendarView.delegate = self;
-        [_monthScrollView addSubview:_leftMonthCalendarView];
-        //当前月
-        _centerMonthCalendarView = [[SubDazzleCalendarView alloc] initWithFrame:CGRectMake(_monthScrollView.frame.size.width, 0, _monthScrollView.frame.size.width, _monthScrollView.frame.size.height) calendarType:DazzleCalendarMonth];
-        _centerMonthCalendarView.delegate = self;
-        [_monthScrollView addSubview:_centerMonthCalendarView];
-        //下一个月
-        _rightMonthCalendarView = [[SubDazzleCalendarView alloc] initWithFrame:CGRectMake(2 * _monthScrollView.frame.size.width, 0, _monthScrollView.frame.size.width, _monthScrollView.frame.size.height) calendarType:DazzleCalendarMonth];
-        _rightMonthCalendarView.delegate = self;
-        [_monthScrollView addSubview:_rightMonthCalendarView];
-        [self addSubview:_monthScrollView];
-        //创建周
-        _weekScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, itemHeight, frame.size.width, 42.5)];
-        _weekScrollView.contentSize = CGSizeMake(3 * _weekScrollView.frame.size.width, _weekScrollView.frame.size.height);
-        _weekScrollView.pagingEnabled = YES;
-        _weekScrollView.delegate = self;
-        _weekScrollView.showsHorizontalScrollIndicator = NO;
-        _weekScrollView.showsVerticalScrollIndicator = NO;
-        //上一个周
-        _leftWeekCalendarView = [[SubDazzleCalendarView alloc] initWithFrame:CGRectMake(0, 0, _weekScrollView.frame.size.width, _weekScrollView.frame.size.height) calendarType:DazzleCalendarWeek];
-        _leftWeekCalendarView.delegate = self;
-        [_weekScrollView addSubview:_leftWeekCalendarView];
-        //当前周
-        _centerWeekCalendarView = [[SubDazzleCalendarView alloc] initWithFrame:CGRectMake(_weekScrollView.frame.size.width, 0, _weekScrollView.frame.size.width, _weekScrollView.frame.size.height) calendarType:DazzleCalendarWeek];
-        _centerWeekCalendarView.delegate = self;
-        [_weekScrollView addSubview:_centerWeekCalendarView];
-        //下一个周
-        _rightWeekCalendarView = [[SubDazzleCalendarView alloc] initWithFrame:CGRectMake(2 * _weekScrollView.frame.size.width, 0, _weekScrollView.frame.size.width, _weekScrollView.frame.size.height) calendarType:DazzleCalendarWeek];
-        _rightWeekCalendarView.delegate = self;
-        [_weekScrollView addSubview:_rightWeekCalendarView];
-        [self addSubview:_weekScrollView];
-        //月视图隐藏周
-        if(_calendarType == DazzleCalendarMonth) {
-            _weekScrollView.hidden = YES;
-            _monthScrollView.hidden = NO;
-            _monthScrollView.frame = CGRectMake(0, itemHeight, frame.size.width, 255);
-        } else {//周视图隐藏月
-            _weekScrollView.hidden = NO;
-            _monthScrollView.hidden = YES;
-            _monthScrollView.frame = CGRectMake(0, itemHeight - 255, frame.size.width, 255);
-        }
-        //创建周几视图
-        NSArray *weekString = @[@"日",@"一",@"二",@"三",@"四",@"五",@"六"];
-        for (int index = 0; index < weekString.count; index ++) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(index * itemWidth, 0, itemWidth, itemHeight)];
-            label.backgroundColor = [UIColor whiteColor];
-            label.textColor = [UIColor colorFromHexCode:@"#777587"];
-            label.textAlignment = NSTextAlignmentCenter;
-            label.font = [UIFont systemFontOfSize:15];
-            label.text = weekString[index];
-            [self addSubview:label];
-        }
     }
     return self;
 }
-//显示当前月的时间
-- (void)showDate:(NSDate*)date {
-    _monthWeekDate = date;
-    [self setNeedUpdateUI:date];
+- (void)configMonthCalendar {
+    //种子时间
+    [_monthSendDates removeAllObjects];
+    NSDateComponents *leftCmp = nil;
+    NSDate *currDate = [NSDate new];
+    NSDate *tempDate = nil;
+    for (int index = 0; index < 2 * _sendDateCount + 1; index ++ ) {
+        leftCmp = [_nSCalender components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:currDate];
+        leftCmp.month += (index - _sendDateCount);
+        tempDate = [NSDate new];
+        tempDate = [_nSCalender dateFromComponents:leftCmp];
+        [_monthSendDates addObject:tempDate];
+    }
+    //集合视图
+    UICollectionViewFlowLayout *monthLayout = [UICollectionViewFlowLayout new];
+    monthLayout.itemSize = CGSizeMake(self.frame.size.width, 42 * 6);
+    monthLayout.minimumLineSpacing = 0;
+    monthLayout.minimumInteritemSpacing = 0;
+    monthLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    _monthCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 42 * 6) collectionViewLayout:monthLayout];
+    _monthCollectionView.backgroundColor = [UIColor whiteColor];
+    _monthCollectionView.pagingEnabled = YES;
+    _monthCollectionView.delegate = self;
+    _monthCollectionView.dataSource = self;
+    _monthCollectionView.showsHorizontalScrollIndicator = NO;
+    [_monthCollectionView registerClass:[MonthCollectionCell class] forCellWithReuseIdentifier:@"MonthCollectionCell"];
+    [self addSubview:_monthCollectionView];
+    [_monthCollectionView setContentOffset:CGPointMake(self.frame.size.width * _sendDateCount, 0)];
 }
-//根据给定的时间重新设置界面
-- (void)setNeedUpdateUI:(NSDate*)showDate {
-    //月视图
-    {
-        [_centerMonthCalendarView showDate:showDate];
-        [_monthScrollView setContentOffset:CGPointMake(_monthScrollView.frame.size.width, 0) animated:NO];
-//        _monthScrollView.contentOffset = CGPointMake(_monthScrollView.frame.size.width, 0);
-        //获取上一个月的今天
-        NSDateComponents *leftCmp = [_nSCalender components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:showDate];
-        [leftCmp setMonth:[leftCmp month] - 1];
-        NSDate *leftDate = [_nSCalender dateFromComponents:leftCmp];
-        [_leftMonthCalendarView showDate:leftDate];
-        
-        //获取下一个月的今天
-        NSDateComponents *rightCmp = [_nSCalender components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:showDate];
-        [rightCmp setMonth:[rightCmp month] + 1];
-        NSDate *rightDate = [_nSCalender dateFromComponents:rightCmp];
-        [_rightMonthCalendarView showDate:rightDate];
+//设置月日历各自的种子时间，重新配置一下界面，让日历滚动当当前时间
+- (void)setMonthSendDate:(NSDate*)sendDate {
+    [_monthSendDates removeAllObjects];
+    NSDateComponents *leftCmp = nil;
+    NSDate *currDate = sendDate;
+    NSDate *tempDate = nil;
+    for (int index = 0; index < 2 * _sendDateCount + 1; index ++ ) {
+        leftCmp = [_nSCalender components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:currDate];
+        leftCmp.month += (index - _sendDateCount);
+        tempDate = [NSDate new];
+        tempDate = [_nSCalender dateFromComponents:leftCmp];
+        [_monthSendDates addObject:tempDate];
     }
-    //周视图
-    {
-        [_centerWeekCalendarView showDate:showDate];
-        [_weekScrollView setContentOffset:CGPointMake(_weekScrollView.frame.size.width, 0) animated:NO];
-//        _weekScrollView.contentOffset = CGPointMake(_weekScrollView.frame.size.width, 0);
-        //获取上一个周的今天
-        NSDate *leftDate = [_monthWeekDate dateByAddingTimeInterval: - 7 * 24 * 60 * 60];
-        [_leftWeekCalendarView showDate:leftDate];
-        
-        //获取下一个周的今天
-        NSDate *rightDate = [_monthWeekDate dateByAddingTimeInterval:7 * 24 * 60 * 60];
-        [_rightWeekCalendarView showDate:rightDate];
-    }
-    //通知代理，已经加载了当前周、月视图
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didLoadDate:)]) {
-        [self.delegate didLoadDate:showDate];
-    }
+    //滚动到中间
+    [_monthCollectionView setContentOffset:CGPointMake(self.frame.size.width * _sendDateCount, 0)];
+    //刷新一下界面
+    [_monthCollectionView reloadData];
 }
-#pragma mark -- UIScrollViewDelegate
+- (void)configWeekCalendar {
+    [_weekSendDates removeAllObjects];
+    NSDate *currDate = [NSDate new];
+    NSDate *tempDate = nil;
+    for (int index = 0; index < 2 * _sendDateCount + 1; index ++ ) {
+        tempDate = [currDate dateByAddingTimeInterval:(index - _sendDateCount) * 7 * 24 * 60 * 60];
+        [_weekSendDates addObject:tempDate];
+    }
+    //集合视图
+    UICollectionViewFlowLayout *weekLayout = [UICollectionViewFlowLayout new];
+    weekLayout.itemSize = CGSizeMake(self.frame.size.width, 42);
+    weekLayout.minimumLineSpacing = 0;
+    weekLayout.minimumInteritemSpacing = 0;
+    weekLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    _weekCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 42) collectionViewLayout:weekLayout];
+    _weekCollectionView.backgroundColor = [UIColor whiteColor];
+    _weekCollectionView.pagingEnabled = YES;
+    _weekCollectionView.delegate = self;
+    _weekCollectionView.dataSource = self;
+    _weekCollectionView.showsHorizontalScrollIndicator = NO;
+    [_weekCollectionView registerClass:[WeekCollectionCell class] forCellWithReuseIdentifier:@"WeekCollectionCell"];
+    [self addSubview:_weekCollectionView];
+    [_weekCollectionView setContentOffset:CGPointMake(self.frame.size.width * _sendDateCount, 0)];
+}
+- (void)setWeekSendDate:(NSDate*)sendDate {
+    [_weekSendDates removeAllObjects];
+    NSDate *currDate = sendDate;
+    NSDate *tempDate = nil;
+    for (int index = 0; index < 2 * _sendDateCount + 1; index ++ ) {
+        tempDate = [currDate dateByAddingTimeInterval:(index - _sendDateCount) * 7 * 24 * 60 * 60];
+        [_weekSendDates addObject:tempDate];
+    }
+    //滚动到中间
+    [_weekCollectionView setContentOffset:CGPointMake(self.frame.size.width * _sendDateCount, 0)];
+    //刷新一下界面
+    [_weekCollectionView reloadData];
+}
+#pragma mark --
+#pragma mark -- UICollectionViewDataSource
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    _currScrollView = scrollView;
-    //滚到上一个月、周 显示一半
-    if(_currScrollView.contentOffset.x <= 0) {
-        //跨、周月了，我们需要得到上一个月、周的今天
-        NSDate *showDate;
-        //跨月了
-        if(_calendarType == DazzleCalendarMonth)
-            showDate = _leftMonthCalendarView.monthWeekDate;
-        else //跨周了
-            showDate = _leftWeekCalendarView.monthWeekDate;
-        if(self.delegate && [self.delegate respondsToSelector:@selector(didScrollDate:)]) {
-            [self.delegate didScrollDate:showDate];
-        }
-    }
-    //滚动下一个月、周 显示一半
-    if(_currScrollView.contentOffset.x >= 2 * _currScrollView.frame.size.width) {
-        //跨月、周了，我们需要得到下一个月、周的今天
-        NSDate *showDate;
-        //跨月了
-        if(_calendarType == DazzleCalendarMonth)
-            showDate = _rightMonthCalendarView.monthWeekDate;
-        else //跨周了
-            showDate = _rightWeekCalendarView.monthWeekDate;
-        if(self.delegate && [self.delegate respondsToSelector:@selector(didScrollDate:)]) {
-            [self.delegate didScrollDate:showDate];
-        }
-    }
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scrollViewDidEndScrollingAnimation) object:nil];
     [self performSelector:@selector(scrollViewDidEndScrollingAnimation) withObject:nil afterDelay:0.1];
 }
-//滚动停止 包括有动画、没有动画  判断滚动偏移
+//滚动停止 包括有动画、没有动画
 - (void)scrollViewDidEndScrollingAnimation {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scrollViewDidEndScrollingAnimation:) object:nil];
-}
-#pragma mark -- SubDazzleCalendarDelegate
-- (void)didSelectDate:(NSDate*)selectDate {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectDate:)]) {
-        [self.delegate didSelectDate:selectDate];
+    //月视图
+    if(_calendarType == DazzleCalendarMonth) {
+        //当前到哪一页了
+        int pageIndex = _monthCollectionView.contentOffset.x / _monthCollectionView.frame.size.width;
+        if(self.delegate && [self.delegate respondsToSelector:@selector(didShowSendDate:)]) {
+            [self.delegate didShowSendDate:_monthSendDates[pageIndex]];
+        }
+        //如果滚动到边缘了，这时候就应该重新设置时间了
+        if(pageIndex == 0)
+            [self setMonthSendDate:_monthSendDates[0]];
+        if(pageIndex == _sendDateCount * 2)
+            [self setMonthSendDate:_monthSendDates[_sendDateCount * 2]];
+    }
+    //周视图
+    if(_calendarType == DazzleCalendarWeek) {
+        //当前到哪一页了
+        int pageIndex = _weekCollectionView.contentOffset.x / _weekCollectionView.frame.size.width;
+        if(self.delegate && [self.delegate respondsToSelector:@selector(didShowSendDate:)]) {
+            [self.delegate didShowSendDate:_weekSendDates[pageIndex]];
+        }
+        //如果滚动到边缘了，这时候就应该重新设置时间了
+        if(pageIndex == 0)
+            [self setWeekSendDate:_weekSendDates[0]];
+        if(pageIndex == _sendDateCount * 2)
+            [self setWeekSendDate:_weekSendDates[_sendDateCount * 2]];
     }
 }
-- (void)didShowDayView:(DazzleCalendarDayView *)dazzleCalendarDayView {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 2 * _sendDateCount + 1;
+}
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = nil;
+    if(collectionView == _monthCollectionView) {
+        MonthCollectionCell *collectionCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MonthCollectionCell" forIndexPath:indexPath];
+        collectionCell.monthSendDate = _monthSendDates[indexPath.row];
+        collectionCell.delegate = self;
+        [collectionCell reloadCurrMonth];
+        cell = collectionCell;
+    }
+    if(collectionView == _weekCollectionView) {
+        WeekCollectionCell *collectionCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WeekCollectionCell" forIndexPath:indexPath];
+        collectionCell.weekSendDate = _weekSendDates[indexPath.row];
+        collectionCell.delegate = self;
+        [collectionCell reloadCurrWeek];
+        cell = collectionCell;
+    }
+    return cell;
+}
+#pragma mark --
+#pragma mark -- MonthCollectionDelegate,WeekCollectionDelegate
+//用户选中了某一天
+- (void)didSelectDayView:(DazzleCalendarDayView*)dayView {
+    if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectDayView:)]) {
+        [self.delegate didSelectDayView:dayView];
+    }
+}
+//日历某一天视图展示，用户可以自己对天视图进行修改
+- (void)didShowDayView:(DazzleCalendarDayView*)dayView {
     if(self.delegate && [self.delegate respondsToSelector:@selector(didShowDayView:)]) {
-        [self.delegate didShowDayView:dazzleCalendarDayView];
+        [self.delegate didShowDayView:dayView];
     }
 }
 @end
+

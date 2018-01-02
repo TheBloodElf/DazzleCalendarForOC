@@ -13,10 +13,11 @@
 		047E151B1FE91522004D6178 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E151A1FE91522004D6178 /* main.m */; };
 		047E15281FE91584004D6178 /* DazzleCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15221FE91584004D6178 /* DazzleCalendar.m */; };
 		047E15291FE91584004D6178 /* DazzleCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15231FE91584004D6178 /* DazzleCalendarDayView.m */; };
-		047E152A1FE91584004D6178 /* SubDazzleCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15241FE91584004D6178 /* SubDazzleCalendarView.m */; };
 		047E152D1FE91595004D6178 /* NSDate+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E152B1FE91595004D6178 /* NSDate+Format.m */; };
 		047E15301FE915EC004D6178 /* UIColor+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E152F1FE915EC004D6178 /* UIColor+FlatUI.m */; };
 		047E15351FE9196D004D6178 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 047E15331FE9196D004D6178 /* NSString+Category.m */; };
+		04FBCE6B1FFB692B00360431 /* MonthCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FBCE671FFB692B00360431 /* MonthCollectionCell.m */; };
+		04FBCE6C1FFB692B00360431 /* WeekCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FBCE6A1FFB692B00360431 /* WeekCollectionCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,10 +31,8 @@
 		047E151A1FE91522004D6178 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		047E15221FE91584004D6178 /* DazzleCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DazzleCalendar.m; sourceTree = "<group>"; };
 		047E15231FE91584004D6178 /* DazzleCalendarDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DazzleCalendarDayView.m; sourceTree = "<group>"; };
-		047E15241FE91584004D6178 /* SubDazzleCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubDazzleCalendarView.m; sourceTree = "<group>"; };
 		047E15251FE91584004D6178 /* DazzleCalendarDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DazzleCalendarDayView.h; sourceTree = "<group>"; };
 		047E15261FE91584004D6178 /* DazzleCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DazzleCalendar.h; sourceTree = "<group>"; };
-		047E15271FE91584004D6178 /* SubDazzleCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubDazzleCalendarView.h; sourceTree = "<group>"; };
 		047E152B1FE91595004D6178 /* NSDate+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Format.m"; sourceTree = "<group>"; };
 		047E152C1FE91595004D6178 /* NSDate+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Format.h"; sourceTree = "<group>"; };
 		047E152E1FE915EC004D6178 /* UIColor+FlatUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+FlatUI.h"; sourceTree = "<group>"; };
@@ -41,6 +40,10 @@
 		047E15321FE91758004D6178 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		047E15331FE9196D004D6178 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
 		047E15341FE9196D004D6178 /* NSString+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Category.h"; sourceTree = "<group>"; };
+		04FBCE671FFB692B00360431 /* MonthCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthCollectionCell.m; sourceTree = "<group>"; };
+		04FBCE681FFB692B00360431 /* WeekCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeekCollectionCell.h; sourceTree = "<group>"; };
+		04FBCE691FFB692B00360431 /* MonthCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthCollectionCell.h; sourceTree = "<group>"; };
+		04FBCE6A1FFB692B00360431 /* WeekCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekCollectionCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +100,10 @@
 				047E152B1FE91595004D6178 /* NSDate+Format.m */,
 				047E15261FE91584004D6178 /* DazzleCalendar.h */,
 				047E15221FE91584004D6178 /* DazzleCalendar.m */,
-				047E15271FE91584004D6178 /* SubDazzleCalendarView.h */,
-				047E15241FE91584004D6178 /* SubDazzleCalendarView.m */,
+				04FBCE691FFB692B00360431 /* MonthCollectionCell.h */,
+				04FBCE671FFB692B00360431 /* MonthCollectionCell.m */,
+				04FBCE681FFB692B00360431 /* WeekCollectionCell.h */,
+				04FBCE6A1FFB692B00360431 /* WeekCollectionCell.m */,
 				047E15251FE91584004D6178 /* DazzleCalendarDayView.h */,
 				047E15231FE91584004D6178 /* DazzleCalendarDayView.m */,
 			);
@@ -179,8 +184,9 @@
 				047E15101FE91522004D6178 /* ViewController.m in Sources */,
 				047E151B1FE91522004D6178 /* main.m in Sources */,
 				047E15351FE9196D004D6178 /* NSString+Category.m in Sources */,
+				04FBCE6C1FFB692B00360431 /* WeekCollectionCell.m in Sources */,
+				04FBCE6B1FFB692B00360431 /* MonthCollectionCell.m in Sources */,
 				047E15291FE91584004D6178 /* DazzleCalendarDayView.m in Sources */,
-				047E152A1FE91584004D6178 /* SubDazzleCalendarView.m in Sources */,
 				047E150D1FE91522004D6178 /* AppDelegate.m in Sources */,
 				047E15281FE91584004D6178 /* DazzleCalendar.m in Sources */,
 			);

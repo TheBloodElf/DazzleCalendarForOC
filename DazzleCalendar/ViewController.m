@@ -41,10 +41,26 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 85, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 85 - 64) style:UITableViewStylePlain];
     [self.view addSubview:_tableView];
     //创建日历
-    _dazzleCalendar = [[DazzleCalendar alloc] initWithFrame:CGRectMake(0, 0, MAIN_SCREEN_WIDTH, 85) calendarType:DazzleCalendarWeek];
+    _dazzleCalendar = [[DazzleCalendar alloc] initWithFrame:CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 42)];
+    _dazzleCalendar.calendarType = DazzleCalendarWeek;
+    [_dazzleCalendar configMonthCalendar];
+    [_dazzleCalendar configWeekCalendar];
+    _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, -252 + 42, MAIN_SCREEN_WIDTH, 252);
+    _dazzleCalendar.monthCollectionView.hidden = YES;
     _dazzleCalendar.delegate = self;
     [self.view addSubview:_dazzleCalendar];
-    [_dazzleCalendar showDate:_userSelectedDate];
+    //创建周几视图
+    NSArray *weekString = @[@"日",@"一",@"二",@"三",@"四",@"五",@"六"];
+    float itemWidth = MAIN_SCREEN_WIDTH / 7;
+    for (int index = 0; index < weekString.count; index ++) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(index * itemWidth, 0, itemWidth, 42)];
+        label.backgroundColor = [UIColor whiteColor];
+        label.textColor = [UIColor colorFromHexCode:@"#777587"];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont systemFontOfSize:15];
+        label.text = weekString[index];
+        [self.view addSubview:label];
+    }
     //给日程添加一个移动手势
     UIPanGestureRecognizer *uIPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
     [_dazzleCalendar addGestureRecognizer:uIPanGestureRecognizer];
@@ -53,41 +69,41 @@
 - (void)panGesture:(UIPanGestureRecognizer*)uipgr {
     //手势开始，记录位置；让月视图、表格视图做动画
     if(uipgr.state == UIGestureRecognizerStateBegan) {
-        _monthScrollViewLastY = _dazzleCalendar.monthScrollView.frame.origin.y;
+        _monthScrollViewLastY = _dazzleCalendar.monthCollectionView.frame.origin.y;
         _tableViewLastY = _tableView.frame.origin.y;
-        _dazzleCalendar.monthScrollView.hidden = NO;
+        _dazzleCalendar.monthCollectionView.hidden = NO;
     }
     //手势结束，改变位置，如果已经移动到了一半以上，延迟一会儿，让滚动视图动画做完
     if(uipgr.state == UIGestureRecognizerStateEnded) {
         //变成月视图
         if(_lastPointY > 0) {
             //如果周视图已经显示出来，就拿周视图做一个动画效果
-            _dazzleCalendar.weekScrollView.alpha = 1;
+            _dazzleCalendar.weekCollectionView.alpha = 1;
             [UIView animateWithDuration:0.15 animations:^{
-                _dazzleCalendar.weekScrollView.alpha = 0;
-                _dazzleCalendar.monthScrollView.frame = CGRectMake(0, 42.5, MAIN_SCREEN_WIDTH, 255);
-                _tableView.frame = CGRectMake(0, 297.5, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 297.5 - 64);
+                _dazzleCalendar.weekCollectionView.alpha = 0;
+                _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, 0, MAIN_SCREEN_WIDTH, 252);
+                _tableView.frame = CGRectMake(0, 252, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 252 - 64);
             } completion:^(BOOL finished) {
-                _dazzleCalendar.weekScrollView.hidden = YES;
-                _dazzleCalendar.weekScrollView.alpha = 1;
+                _dazzleCalendar.weekCollectionView.hidden = YES;
+                _dazzleCalendar.weekCollectionView.alpha = 1;
                 _dazzleCalendar.calendarType = DazzleCalendarMonth;
-                _dazzleCalendar.frame = CGRectMake(0, 0, MAIN_SCREEN_WIDTH, 297.5);
+                _dazzleCalendar.frame = CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 252);
             }];
         } else {//变成周视图
-            if(_dazzleCalendar.weekScrollView.hidden == YES) {
-                _dazzleCalendar.weekScrollView.alpha = 0;
-                _dazzleCalendar.weekScrollView.hidden = NO;
+            if(_dazzleCalendar.weekCollectionView.hidden == YES) {
+                _dazzleCalendar.weekCollectionView.alpha = 0;
+                _dazzleCalendar.weekCollectionView.hidden = NO;
             }
             [UIView animateWithDuration:0.15 animations:^{
-                _dazzleCalendar.weekScrollView.alpha = 1;
-                _dazzleCalendar.monthScrollView.alpha = 0;
-                _dazzleCalendar.monthScrollView.frame = CGRectMake(0, -255 + 42.5, MAIN_SCREEN_WIDTH, 255);
-                _tableView.frame = CGRectMake(0, 85, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 85 - 64);
+                _dazzleCalendar.weekCollectionView.alpha = 1;
+                _dazzleCalendar.monthCollectionView.alpha = 0;
+                _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, -252 + 42, MAIN_SCREEN_WIDTH, 252);
+                _tableView.frame = CGRectMake(0, 84, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 84 - 64);
             } completion:^(BOOL finished) {
-                _dazzleCalendar.monthScrollView.hidden = YES;
-                _dazzleCalendar.monthScrollView.alpha = 1;
+                _dazzleCalendar.monthCollectionView.hidden = YES;
+                _dazzleCalendar.monthCollectionView.alpha = 1;
                 _dazzleCalendar.calendarType = DazzleCalendarWeek;
-                _dazzleCalendar.frame = CGRectMake(0, 0, MAIN_SCREEN_WIDTH, 85);
+                _dazzleCalendar.frame = CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 42);
             }];
         }
     }
@@ -98,41 +114,41 @@
         //这里要特别注意了，往下滑动的话 y是从42.5开始的
         if(_lastPointY > 0) {
             //改变日程月视图的frame
-            _dazzleCalendar.monthScrollView.frame = CGRectMake(0, _monthScrollViewLastY + point.y + 42.5, _dazzleCalendar.monthScrollView.frame.size.width, _dazzleCalendar.monthScrollView.frame.size.height);
+            _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, _monthScrollViewLastY + point.y + 42.5, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             //怎么处理边界问题?滑动到最下面了
-            if(_dazzleCalendar.monthScrollView.frame.origin.y > 42.5)
-                _dazzleCalendar.monthScrollView.frame = CGRectMake(0, 42.5, _dazzleCalendar.monthScrollView.frame.size.width, _dazzleCalendar.monthScrollView.frame.size.height);
+            if(_dazzleCalendar.monthCollectionView.frame.origin.y > 0)
+                _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, 0, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             
             //这里需要让表格视图frame改变
             _tableView.frame = CGRectMake(0, _tableViewLastY + point.y, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - (_tableViewLastY + point.y) - 64);
             //处理边界问题？滑动到最下面了
-            if(_tableView.frame.origin.y > 297.5)
-                _tableView.frame = CGRectMake(0, 297.5, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 297.5 - 64);
+            if(_tableView.frame.origin.y > 294)
+                _tableView.frame = CGRectMake(0, 294, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 294 - 64);
         } else {
             //改变日程月视图的frame
-            _dazzleCalendar.monthScrollView.frame = CGRectMake(0, _monthScrollViewLastY + point.y, _dazzleCalendar.monthScrollView.frame.size.width, _dazzleCalendar.monthScrollView.frame.size.height);
+            _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, _monthScrollViewLastY + point.y, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             //怎么处理边界问题? 滑动到最上面了
-            if(_dazzleCalendar.monthScrollView.frame.origin.y < -255 + 42.5)
-                _dazzleCalendar.monthScrollView.frame = CGRectMake(0, -255 + 42.5, _dazzleCalendar.monthScrollView.frame.size.width, _dazzleCalendar.monthScrollView.frame.size.height);
+            if(_dazzleCalendar.monthCollectionView.frame.origin.y < -252 + 42)
+                _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, -252 + 42, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             
             //这里需要让表格视图frame改变
             _tableView.frame = CGRectMake(0, _tableViewLastY + point.y, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - (_tableViewLastY + point.y) - 64);
             //处理边界问题？滑动到最上面了
-            if(_tableView.frame.origin.y < 85)
-                _tableView.frame = CGRectMake(0, 85, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 85 - 64);
+            if(_tableView.frame.origin.y < 84)
+                _tableView.frame = CGRectMake(0, 84, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 84 - 64);
         }
         //在合适的时机让周视图显示出来
         if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
-            if(point.y <= (1 - _selectDateIndex) * 42.5) {
-                _dazzleCalendar.weekScrollView.hidden = NO;
+            if(point.y <= (1 - _selectDateIndex) * 42) {
+                _dazzleCalendar.weekCollectionView.hidden = NO;
             } else {
-                _dazzleCalendar.weekScrollView.hidden = YES;
+                _dazzleCalendar.weekCollectionView.hidden = YES;
             }
         } else {
-            if(point.y >= (6 - _selectDateIndex) * 42.5) {
-                _dazzleCalendar.weekScrollView.hidden = YES;
+            if(point.y >= (6 - _selectDateIndex) * 42) {
+                _dazzleCalendar.weekCollectionView.hidden = YES;
             } else {
-                _dazzleCalendar.weekScrollView.hidden = NO;
+                _dazzleCalendar.weekCollectionView.hidden = NO;
             }
         }
     }
@@ -188,32 +204,54 @@
             }
 }
 //用户选中了某一天
-- (void)didSelectDate:(NSDate*)date {
-    BOOL isFromAnotherMonth = NO;
-    if(date.month != _userSelectedDate.month)
-        isFromAnotherMonth = YES;
-    _userSelectedDate = date;
+- (void)didSelectDayView:(DazzleCalendarDayView*)dayView {
+    _userSelectedDate = dayView.dayDate.copy;
+    if(dayView.monthWeekDate.month != dayView.dayDate.month) {
+        [_dazzleCalendar setWeekSendDate:_userSelectedDate];
+        [_dazzleCalendar setMonthSendDate:_userSelectedDate];
+        self.title = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@年%@月",@(dayView.dayDate.year),@(dayView.dayDate.month)]];
+    }else {//点击的当月，加载当天
+        if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
+            [_dazzleCalendar.monthCollectionView reloadData];
+            [_dazzleCalendar setWeekSendDate:_userSelectedDate];
+        }
+        if(_dazzleCalendar.calendarType == DazzleCalendarWeek) {
+            [_dazzleCalendar.weekCollectionView reloadData];
+            [_dazzleCalendar setMonthSendDate:_userSelectedDate];
+        }
+    }
     NSCalendar * calendar = [NSCalendar currentCalendar];
     NSDateComponents * comps = [[NSDateComponents alloc] init];
     comps = [calendar components:NSCalendarUnitWeekOfMonth fromDate:_userSelectedDate];
     _selectDateIndex = (int)[comps weekOfMonth];
-    [_dazzleCalendar showDate:_userSelectedDate];
 }
-//已经滚动到了了当前月、周  这里的处理是让用户选中对应的时间，你也可以什么都不做，不存在的
-- (void)didScrollDate:(NSDate*)date {
-    BOOL isFromAnotherMonth = NO;
-    if(date.month != _userSelectedDate.month)
-        isFromAnotherMonth = YES;
-    _userSelectedDate = date;
+//日程显示到了当前种子时间
+- (void)didShowSendDate:(NSDate*)sendDate {
+    //改变用户选择时间
+    if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
+        _userSelectedDate = [NSDate dateWithFormat:[NSString stringWithFormat:@"%ld-%02ld-%02ld 08:30:00",sendDate.year,sendDate.month,_userSelectedDate.day]];
+    }
+    if(_dazzleCalendar.calendarType == DazzleCalendarWeek) {
+        //当前天是一周的第几天 周日为第一天
+        int currDayOfWeeK = (int)_userSelectedDate.weekday + 1;
+        if(currDayOfWeeK == 8) currDayOfWeeK = 1;
+        int sendDayOfWeeK = (int)sendDate.weekday + 1;
+        if(sendDayOfWeeK == 8) sendDayOfWeeK = 1;
+        _userSelectedDate = sendDate.copy;
+        _userSelectedDate = [_userSelectedDate dateByAddingTimeInterval:24 * 60 * 60 * (currDayOfWeeK - sendDayOfWeeK)];
+    }
+    if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
+        [_dazzleCalendar.monthCollectionView reloadData];
+        [_dazzleCalendar setWeekSendDate:_userSelectedDate];
+    }
+    if(_dazzleCalendar.calendarType == DazzleCalendarWeek) {
+        [_dazzleCalendar.weekCollectionView reloadData];
+        [_dazzleCalendar setMonthSendDate:_userSelectedDate];
+    }
     NSCalendar * calendar = [NSCalendar currentCalendar];
     NSDateComponents * comps = [[NSDateComponents alloc] init];
     comps = [calendar components:NSCalendarUnitWeekOfMonth fromDate:_userSelectedDate];
     _selectDateIndex = (int)[comps weekOfMonth];
-    [_dazzleCalendar showDate:_userSelectedDate];
+    self.title = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@年%@月",@(sendDate.year),@(sendDate.month)]];
 }
-//已经显示了当前月、周时间
-- (void)didLoadDate:(NSDate*)date {
-    self.title = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@年%@月",@(date.year),@(date.month)]];
-}
-
 @end

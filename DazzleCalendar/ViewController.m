@@ -60,7 +60,7 @@
     for (int index = 0; index < weekString.count; index ++) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(index * itemWidth, 0, itemWidth, 42)];
         label.backgroundColor = [UIColor whiteColor];
-        label.textColor = [UIColor colorFromHexCode:@"#777587"];
+        label.textColor = [UIColor blackColor];
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:15];
         label.text = weekString[index];
@@ -170,7 +170,7 @@
 - (void)didShowDayView:(DazzleCalendarDayView*)dayView {
     dayView.dateHolidayLabel.hidden = NO;
     dayView.solidBgView.hidden = YES;
-    dayView.dateHolidayLabel.textColor = [UIColor colorFromHexCode:@"#9fa8b5"];
+    dayView.dateHolidayLabel.textColor = [UIColor blackColor];
     dayView.solidBgView.layer.borderWidth = 0;
     dayView.solidBgView.backgroundColor = [UIColor clearColor];
     //设置文字
@@ -198,14 +198,14 @@
     //月视图需要让不是本月的时间显示灰色
     if(dayView.calendarType == DazzleCalendarMonth) {
         if(dayView.dayDate.month != dayView.monthWeekDate.month)
-            dayView.dateHolidayLabel.textColor = [UIColor colorFromHexCode:@"#d0d7e2"];
+            dayView.dateHolidayLabel.textColor = [UIColor grayColor];
     }
     //是不是今天
     if(dayView.dayDate.day == [NSDate new].day)
         if(dayView.dayDate.month == [NSDate new].month)
             if(dayView.dayDate.year == [NSDate new].year) {
                 dayView.solidBgView.hidden = NO;
-                dayView.solidBgView.layer.borderColor = [UIColor bangbangNavColor].CGColor;
+                dayView.solidBgView.layer.borderColor = [UIColor redColor].CGColor;
                 dayView.solidBgView.layer.borderWidth = 1;
             }
     //是不是用户选中的天
@@ -214,7 +214,7 @@
             if(dayView.dayDate.year == _userSelectedDate.year) {
                 dayView.dateHolidayLabel.textColor = [UIColor whiteColor];
                 dayView.solidBgView.hidden = NO;
-                dayView.solidBgView.backgroundColor = [UIColor bangbangNavColor];
+                dayView.solidBgView.backgroundColor = [UIColor redColor];
             }
 }
 //用户选中了某一天

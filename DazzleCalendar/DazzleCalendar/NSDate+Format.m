@@ -42,35 +42,6 @@
     week = week - 1;
     return week ?: 7;
 }
-- (NSString*)weekdayStr {
-    NSString *weekday = nil;
-    switch (self.weekday) {
-        case 1:weekday = @"一";break;
-        case 2:weekday = @"二";break;
-        case 3:weekday = @"三";break;
-        case 4:weekday = @"四";break;
-        case 5:weekday = @"五";break;
-        case 6:weekday = @"六";break;
-        default:weekday = @"日"; break;
-    }
-    return weekday;
-}
-//算出今天凌晨时间
-- (NSDate*)firstTime {
-    int64_t currSecond = self.timeIntervalSince1970;
-    currSecond = currSecond - self.hour * 60 * 60 - self.minute * 60 - self.second;
-    NSDate * currDate = [NSDate dateWithTimeIntervalSince1970:currSecond];
-    return currDate;
-}
-//算出明天凌晨时间
-- (NSDate*)lastTime {
-    int64_t currSecond = self.timeIntervalSince1970;
-    currSecond = currSecond - self.hour * 60 * 60 - self.minute * 60 - self.second;
-    currSecond = currSecond + (24 * 60 * 60);
-    currSecond = currSecond - 1;
-    NSDate * currDate = [NSDate dateWithTimeIntervalSince1970:currSecond];
-    return currDate;
-}
 + (NSDate*)dateWithFormat:(NSString *)format
 {
     NSDateFormatter * df2 = [[NSDateFormatter alloc] init];
@@ -349,20 +320,6 @@ static int32_t gLunarHolDay[]=
     if(self.month == 11 && weekOfMonth == 4 && self.weekday == 4)
         return @"感恩节";
     return @"";
-}
-//该天是否为法定节假日 自己写死，反正都是固定的
-- (BOOL)isLegalHoliday {
-    NSArray *legalHolidays2017 = @[@"2017-12-30",@"2017-12-31"];
-    NSArray *legalHolidays2018 = @[@"2018-1-1",@"2018-2-15",@"2018-2-16",@"2018-2-17",@"2018-2-18",@"2018-2-19",@"2018-2-20",@"2018-2-21",@"2018-4-5",@"2018-4-6",@"2018-4-7",@"2018-4-29",@"2018-4-30",@"2018-5-1",@"2018-6-16",@"2018-6-17",@"2018-6-18",@"2018-9-22",@"2018-9-23",@"2018-9-24",@"2018-10-1",@"2018-10-2",@"2018-10-3",@"2018-10-4",@"2018-10-5",@"2018-10-6",@"2018-10-7"];
-    NSString *currDateString = [NSString stringWithFormat:@"%@-%@-%@",@(self.year),@(self.month),@(self.day)];
-    return [legalHolidays2018 containsObject:currDateString] ||
-    [legalHolidays2017 containsObject:currDateString];
-}
-//该天是否为法定上班日 自己写死，反正都是固定的
-- (BOOL)isLegalWorkday {
-    NSArray *legalWorkdays2018 = @[@"2018-2-11",@"2018-2-24",@"2018-4-8",@"2018-4-28",@"2018-9-29",@"2018-9-30"];
-    NSString *currDateString = [NSString stringWithFormat:@"%@-%@-%@",@(self.year),@(self.month),@(self.day)];
-    return [legalWorkdays2018 containsObject:currDateString];
 }
 
 @end

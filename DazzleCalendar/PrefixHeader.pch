@@ -14,7 +14,6 @@
 
 #import <UIKit/UIKit.h>
 #import "NSDate+Format.h"
-#import "UIColor+FlatUI.h"
 #import "NSString+Category.h"
 
 #endif /* PrefixHeader_pch */

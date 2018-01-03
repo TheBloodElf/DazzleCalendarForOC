@@ -22,13 +22,13 @@
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[ViewController new]];
     [nav.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [nav.navigationBar setShadowImage:[UIImage new]];
-    nav.navigationBar.barTintColor = [UIColor bangbangNavColor];
+    nav.navigationBar.barTintColor = [UIColor redColor];
     [nav.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18],NSForegroundColorAttributeName:[UIColor whiteColor]}];
     nav.navigationBar.translucent = NO;
     nav.navigationBar.hidden = NO;
     nav.navigationBar.tintColor = [UIColor whiteColor];
     [nav.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor grayColor]} forState:UIControlStateNormal];
-    [nav.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor bangbangNavColor]} forState:UIControlStateSelected];
+    [nav.tabBarItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor redColor]} forState:UIControlStateSelected];
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
     return YES;

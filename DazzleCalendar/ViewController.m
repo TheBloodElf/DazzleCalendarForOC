@@ -170,8 +170,9 @@
 - (void)didShowDayView:(DazzleCalendarDayView*)dayView {
     dayView.dateHolidayLabel.hidden = NO;
     dayView.solidBgView.hidden = YES;
-    dayView.hollowBgView.hidden = YES;
     dayView.dateHolidayLabel.textColor = [UIColor colorFromHexCode:@"#9fa8b5"];
+    dayView.solidBgView.layer.borderWidth = 0;
+    dayView.solidBgView.backgroundColor = [UIColor clearColor];
     //设置文字
     //显示今天几号
     dayView.dateHolidayLabel.text = @(dayView.dayDate.day).stringValue;
@@ -199,12 +200,13 @@
         if(dayView.dayDate.month != dayView.monthWeekDate.month)
             dayView.dateHolidayLabel.textColor = [UIColor colorFromHexCode:@"#d0d7e2"];
     }
-    //今天需要显示空心的圈
+    //是不是今天
     if(dayView.dayDate.day == [NSDate new].day)
         if(dayView.dayDate.month == [NSDate new].month)
             if(dayView.dayDate.year == [NSDate new].year) {
-                dayView.hollowBgView.hidden = NO;
-                dayView.hollowBgView.layer.borderColor = [UIColor bangbangNavColor].CGColor;
+                dayView.solidBgView.hidden = NO;
+                dayView.solidBgView.layer.borderColor = [UIColor bangbangNavColor].CGColor;
+                dayView.solidBgView.layer.borderWidth = 1;
             }
     //是不是用户选中的天
     if(dayView.dayDate.day == _userSelectedDate.day)

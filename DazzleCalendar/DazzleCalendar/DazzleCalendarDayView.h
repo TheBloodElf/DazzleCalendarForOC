@@ -21,11 +21,10 @@ typedef NS_ENUM(NSInteger, DazzleCalendarType) {
 @property (strong, nonatomic) NSDate *dayDate;
 //当天是在哪个类型的日历中 用于月、周单独设置
 @property (nonatomic, assign) DazzleCalendarType calendarType;
-//实心的背景圆
+
+//背景圆
 @property (strong, nonatomic) UIView *solidBgView;
-//空心的只有边框的背景圆
-@property (strong, nonatomic) UIView *hollowBgView;
-//显示天数字的标签 阴历、节假日、节气标签  剧中
+//中间的文本框
 @property (strong, nonatomic) UILabel *dateHolidayLabel;
 
 

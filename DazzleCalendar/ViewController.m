@@ -12,7 +12,7 @@
 #define MAIN_SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define MAIN_SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 
-@interface ViewController ()<DazzleCalendarDelegate> {
+@interface ViewController ()<DazzleCalendarDelegate,UITableViewDataSource,UITableViewDelegate> {
     UITableView *_tableView;//表格视图
     DazzleCalendar *_dazzleCalendar;//日历控件
     NSCalendar * _nScalendar;
@@ -22,6 +22,7 @@
     CGFloat _tableViewLastY;//表格视图开始改变的y点
     CGFloat _lastPointY;//移动了多少距离用来改变frame
     int _selectDateIndex;//当前选中的时间在第几行，用来计算日历中周视图的显示、隐藏
+    UIPanGestureRecognizer *_uIPanGestureRecognizer;//控制frame手势
 }
 
 @end
@@ -40,7 +41,9 @@
     comps = [calendar components:NSCalendarUnitWeekOfMonth fromDate:_userSelectedDate];
     _selectDateIndex = (int)[comps weekOfMonth];
     //表格视图
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 85, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 85 - 64) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 84, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 84 - 64) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     //创建日历
     _dazzleCalendar = [[DazzleCalendar alloc] initWithFrame:CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 42)];
@@ -63,9 +66,9 @@
         label.text = weekString[index];
         [self.view addSubview:label];
     }
-    //给日程添加一个移动手势
-    UIPanGestureRecognizer *uIPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
-    [_dazzleCalendar addGestureRecognizer:uIPanGestureRecognizer];
+    _uIPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
+    _tableView.scrollEnabled = YES;
+    [self.view addGestureRecognizer:_uIPanGestureRecognizer];
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)panGesture:(UIPanGestureRecognizer*)uipgr {
@@ -84,13 +87,15 @@
             [UIView animateWithDuration:0.15 animations:^{
                 _dazzleCalendar.weekCollectionView.alpha = 0;
                 _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, 0, MAIN_SCREEN_WIDTH, 252);
-                _tableView.frame = CGRectMake(0, 252, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 252 - 64);
+                _tableView.frame = CGRectMake(0, 294, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 252 - 64);
             } completion:^(BOOL finished) {
                 _dazzleCalendar.weekCollectionView.hidden = YES;
                 _dazzleCalendar.weekCollectionView.alpha = 1;
                 _dazzleCalendar.calendarType = DazzleCalendarMonth;
                 _dazzleCalendar.frame = CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 252);
             }];
+            _tableView.scrollEnabled = NO;
+            [_tableView setContentOffset:CGPointMake(0, 0) animated:NO];
         } else {//变成周视图
             if(_dazzleCalendar.weekCollectionView.hidden == YES) {
                 _dazzleCalendar.weekCollectionView.alpha = 0;
@@ -107,51 +112,56 @@
                 _dazzleCalendar.calendarType = DazzleCalendarWeek;
                 _dazzleCalendar.frame = CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 42);
             }];
+            _tableView.scrollEnabled = YES;
+            [_tableView setContentOffset:CGPointMake(0, 0) animated:NO];
         }
     }
     //手势进行中，
     if(uipgr.state == UIGestureRecognizerStateChanged) {
-        CGPoint point = [uipgr translationInView:self.view];
-        _lastPointY = point.y;
-        //这里要特别注意了，往下滑动的话 y是从42.5开始的
+        _lastPointY = [uipgr translationInView:self.view].y;
+        //这里要特别注意了，往下滑动的话 y是从42开始的
         if(_lastPointY > 0) {
             //改变日程月视图的frame
-            _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, _monthScrollViewLastY + point.y + 42.5, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
+            _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, _monthScrollViewLastY + _lastPointY, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             //怎么处理边界问题?滑动到最下面了
             if(_dazzleCalendar.monthCollectionView.frame.origin.y > 0)
                 _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, 0, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             
             //这里需要让表格视图frame改变
-            _tableView.frame = CGRectMake(0, _tableViewLastY + point.y, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - (_tableViewLastY + point.y) - 64);
+            _tableView.frame = CGRectMake(0, _tableViewLastY + _lastPointY, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - (_tableViewLastY + _lastPointY) - 64);
             //处理边界问题？滑动到最下面了
             if(_tableView.frame.origin.y > 294)
                 _tableView.frame = CGRectMake(0, 294, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 294 - 64);
         } else {
             //改变日程月视图的frame
-            _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, _monthScrollViewLastY + point.y, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
+            _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, _monthScrollViewLastY + _lastPointY, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             //怎么处理边界问题? 滑动到最上面了
             if(_dazzleCalendar.monthCollectionView.frame.origin.y < -252 + 42)
                 _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, -252 + 42, _dazzleCalendar.monthCollectionView.frame.size.width, _dazzleCalendar.monthCollectionView.frame.size.height);
             
             //这里需要让表格视图frame改变
-            _tableView.frame = CGRectMake(0, _tableViewLastY + point.y, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - (_tableViewLastY + point.y) - 64);
+            _tableView.frame = CGRectMake(0, _tableViewLastY + _lastPointY, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - (_tableViewLastY + _lastPointY) - 64);
             //处理边界问题？滑动到最上面了
             if(_tableView.frame.origin.y < 84)
                 _tableView.frame = CGRectMake(0, 84, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 84 - 64);
         }
         //在合适的时机让周视图显示出来
-        if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
-            if(point.y <= (1 - _selectDateIndex) * 42) {
-                _dazzleCalendar.weekCollectionView.hidden = NO;
-            } else {
-                _dazzleCalendar.weekCollectionView.hidden = YES;
-            }
+        [self checkWeekView];
+    }
+}
+//在合适的时机让周视图显示出来
+- (void)checkWeekView {
+    if(_dazzleCalendar.calendarType == DazzleCalendarMonth) {
+        if(_dazzleCalendar.monthCollectionView.frame.origin.y <= (1 - _selectDateIndex) * 42) {
+            _dazzleCalendar.weekCollectionView.hidden = NO;
         } else {
-            if(point.y >= (6 - _selectDateIndex) * 42) {
-                _dazzleCalendar.weekCollectionView.hidden = YES;
-            } else {
-                _dazzleCalendar.weekCollectionView.hidden = NO;
-            }
+            _dazzleCalendar.weekCollectionView.hidden = YES;
+        }
+    } else {
+        if(_dazzleCalendar.monthCollectionView.frame.origin.y >= (6 - _selectDateIndex) * 42) {
+            _dazzleCalendar.weekCollectionView.hidden = YES;
+        } else {
+            _dazzleCalendar.weekCollectionView.hidden = NO;
         }
     }
 }
@@ -263,4 +273,39 @@
     _selectDateIndex = (int)[comps weekOfMonth];
     self.title = [[NSString alloc] initWithString:[NSString stringWithFormat:@"%@年%@月",@(sendDate.year),@(sendDate.month)]];
 }
+#pragma mark --
+#pragma mark -- UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 100;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:@"tableViewCell"];
+    if(!tableViewCell)
+        tableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"tableViewCell"];
+    tableViewCell.textLabel.text = @(indexPath.row).stringValue;
+    return tableViewCell;
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //如果是周视图 用户往下拉，就变成月
+    if(_dazzleCalendar.calendarType == DazzleCalendarWeek) {
+        if(scrollView.contentOffset.y < 0) {
+            _dazzleCalendar.weekCollectionView.alpha = 1;
+            _dazzleCalendar.monthCollectionView.hidden = NO;
+            [UIView animateWithDuration:0.15 animations:^{
+                _dazzleCalendar.weekCollectionView.alpha = 0;
+                _dazzleCalendar.monthCollectionView.frame = CGRectMake(0, 0, MAIN_SCREEN_WIDTH, 252);
+                _tableView.frame = CGRectMake(0, 294, MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT - 252 - 64);
+            } completion:^(BOOL finished) {
+                _dazzleCalendar.weekCollectionView.hidden = YES;
+                _dazzleCalendar.weekCollectionView.alpha = 1;
+                _dazzleCalendar.calendarType = DazzleCalendarMonth;
+                _dazzleCalendar.frame = CGRectMake(0, 42, MAIN_SCREEN_WIDTH, 252);
+            }];
+            //然后给self.view添加手势
+            _tableView.scrollEnabled = NO;
+            [_tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+        }
+    }
+}
+
 @end

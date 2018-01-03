@@ -10,7 +10,6 @@
 
 @interface MonthCollectionCell () {
     NSMutableArray<DazzleCalendarDayView*> *_dayViews;
-    NSMutableArray<NSDate*> *_monthSendDates;
     NSCalendar *_nSCalender;//弄成单例，内存占用太多
 }
 

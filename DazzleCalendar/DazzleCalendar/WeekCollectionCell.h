@@ -20,9 +20,11 @@
 
 @interface WeekCollectionCell : UICollectionViewCell
 
-//当前月种子时间
+//当前周种子时间
 @property (nonatomic, strong) NSDate *weekSendDate;
-@property (nonatomic, weak) id<WeekCollectionDelegate> delegate;
+//当前周所有的时间
+@property (nonatomic, strong) NSMutableArray<NSDate*> *weekSendDates;
+@property (nonatomic,   weak) id<WeekCollectionDelegate> delegate;
 //刷新一下当前界面
 - (void)reloadCurrWeek;
 

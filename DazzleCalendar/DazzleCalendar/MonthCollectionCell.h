@@ -21,7 +21,9 @@
 @interface MonthCollectionCell : UICollectionViewCell
 //当前月种子时间
 @property (nonatomic, strong) NSDate *monthSendDate;
-@property (nonatomic, weak) id<MonthCollectionDelegate> delegate;
+//当前月所有的时间
+@property (nonatomic, strong) NSMutableArray<NSDate*> *monthSendDates;
+@property (nonatomic,   weak) id<MonthCollectionDelegate> delegate;
 //刷新一下当前界面
 - (void)reloadCurrMonth;
 

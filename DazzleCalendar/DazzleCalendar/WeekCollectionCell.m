@@ -10,7 +10,6 @@
 
 @interface WeekCollectionCell () {
     NSMutableArray<DazzleCalendarDayView*> *_dayViews;
-    NSMutableArray<NSDate*> *_weekSendDates;
     NSCalendar *_nSCalender;//弄成单例，内存占用太多
 }
 

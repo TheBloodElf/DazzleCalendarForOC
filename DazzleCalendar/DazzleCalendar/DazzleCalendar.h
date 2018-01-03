@@ -25,7 +25,7 @@
 @interface DazzleCalendar : UIView
 //日历 周、月 默认周
 @property (nonatomic, assign) DazzleCalendarType calendarType;
-@property (nonatomic, weak) id<DazzleCalendarDelegate> delegate;
+@property (nonatomic,   weak) id<DazzleCalendarDelegate> delegate;
 @property (nonatomic, strong) UICollectionView *monthCollectionView;//月表格视图
 @property (nonatomic, strong) UICollectionView *weekCollectionView;//月表格视图
 //配置月视图
